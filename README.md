@@ -1,3 +1,80 @@
+# Docker_1st
+Dockerを試す。<br>
+今回はDockerでLaravel環境を一発で作ってくれるLaravel sailを使用。<br>
+環境構築を含め試す。<br>
+
+### DockerContainer
+ockerContainer 料理<br>
+PCの中で動く仮想環境の空間<br>
+この中にPHP, Laravel, Node.js等入れてアプリケーションを動かすようにできる環境を作成する。<br>
+DockerRepository→DockerImage→DockerContainerの流れで生成する。<br>
+
+### DockerImage
+DockerImage レシピ<br>
+
+### DockerRepository
+DockerHub, GCR, ECR等のWEBプラットフォーム<br>
+
+### DockerFile
+上記内容をまとめたファイル(具体的に記載されている内容は以下の通り)<br>
+```
+# ベースイメージを指定
+FROM python:3.8
+
+# 作業ディレクトリを指定
+WORKDIR /usr/src/app
+
+# 現ディレクトリ(./)から作業ディレクトリ(/usr/src/app)にファイルをコピー
+COPY ..
+
+# 依存関係(pipモジュール)をインストール
+RUN pip install --no-cache-dir -r requirements.txt
+
+# コンテナ内でコマンド`python./app.py`を実行
+CMD ["python","./app.py"]
+```
+
+### DockerCompose
+コンテナは複数作られることが多い<br>
+例として...<br>
+ContainerA アプリケーション(フロントエンド) Node.js npm React<br>
+ContainerB アプリケーション(サーバーサイド) PHP Laravel<br>
+ContainerC ミドルフェア MySQL<br>
+独立しているが連携してデータのやり取りが可能<br>
+docker-compose.ymlが必要<br>
+
+### DockerVolumes
+データを入れて保存しておける領域<br>
+DockerContainerやImageと別で存在しているエリア<br>
+テストデータやダミーデータをVolumesに入れておけばContainer間でで共有可能になる<br>
+DockerではメモリやCPUをどれだけ使用するか指定する<br>
+
+### Laravel Sail
+DockerでLaravel環境を一発で作ってくれるコマンドラインツール<br>
+
+Laravel Sail - Laravel 11.x<br>
+https://laravel.com/docs/11.x/sail<br>
+<br>
+Laravel Sail - Installation<br>
+https://laravel.com/docs/11.x/installation<br>
+
+以下のコマンドでインストールする(Dockerを起動しておくこと)<br>
+```
+curl -s "https://laravel.build/Docker_1st" | bash
+```
+インストール後以下のコマンドを実行<br>
+```
+cd Docker_1st && ./vendor/bin/sail up
+```
+.envファイルに以下のポートを記載する<br>
+```
+APP_PORT=8080  # ポート80番が使われているため指定する
+FORWARD_DB_PORT=33066  # ポート3306番が使われているため指定する
+```
+参考サイト<br>
+https://lotus-base.com/blog/35/<br>
+<br>
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
